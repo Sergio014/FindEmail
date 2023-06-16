@@ -20,11 +20,11 @@ def check_message_count(user_id):
     result = cursor.fetchone()
 
     # Check if the user is banned and calculate the ban duration
-    if result and result[1] and datetime.strptime(datetime.now(), "%Y/%m/%d %H:%M") < datetime.strptime(result[1], "%Y/%m/%d %H:%M"):
+    if result and result[1] and datetime.now() < datetime.strptime(result[1], "%Y/%m/%d %H:%M"):
         ban_expiry_date = datetime.strptime(result[1], "%Y/%m/%d %H:%M")
         ban_duration = (ban_expiry_date - datetime.now()).days
         return True
-    elif result and result[1] and datetime.strptime(datetime.now(), "%Y/%m/%d %H:%M") >= datetime.strptime(result[1], "%Y/%m/%d %H:%M"):
+    elif result and result[1] and datetime.now() >= datetime.strptime(result[1], "%Y/%m/%d %H:%M"):
         cursor.execute("DELETE FROM user_messages WHERE user_id = ?", (user_id,))
         conn.commit()
         return False
