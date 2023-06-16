@@ -26,7 +26,7 @@ user = {}
 response = requests.get('https://findemail.pythonanywhere.com/api-v1/check_bot').json()
 if not response['is_active']:
     @bot.message_handler(func=lambda message: True)
-    def handle_message_if_inactive():
+    def handle_message_if_inactive(message):
         pass
 
 @bot.message_handler(commands=['start'])
