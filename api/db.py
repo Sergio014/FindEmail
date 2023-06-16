@@ -49,11 +49,10 @@ def validate_email(email):
 
 def check_email_in_db(email, is_verified): # 'is verified' is used to understand where user is checking email, in telegram bot or after him verified yourself.
     if not validate_email(email): # check is email valid
-        print('Invalid Email')
         return False
     try:
-        data = models.User.objects.filter(username=email) # try to get something from db using email
-        result = data[0] # filter() returns Queriset (list of objects), so we use data[0] to get only first object
+        data = models.ExposedUser.objects.filter(username=email) # try to get something from db using email
+        result = data[0] # filter() returns Queriset (list of objects), so I use data[0] to get only first object
         if data.exists() and not is_verified:
             return f"Email found in the database. Email was exposed at {result.date_created}"
         elif is_verified:

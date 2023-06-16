@@ -1,6 +1,5 @@
 import telebot
 import requests
-import json
 from django.core.management.base import BaseCommand
 from telebot import types
 from .token import TOKEN
@@ -17,6 +16,9 @@ def webAppKeyboard(link): #создание клавиатуры с webapp кн�
 
    return keyboard
 
+def send_full_info_to_user(tel_id, data):
+    bot.send_message(tel_id, data)
+
 user = {}
 
 @bot.message_handler(commands=['start'])
@@ -30,7 +32,7 @@ def check_email(message):
     if message.text == '/start':
         return
     # checking through API
-    response = requests.get(f'https://findemail.pythonanywhere.com/api-v1/check/{message.text}')
+    response = requests.get(f'https://findemail.pythonanywhere.com/api-v1/check/{message.text}/{message.chat.id}')
     response_dict = response.json()
     # if all is OK
     if response.status_code == 200:

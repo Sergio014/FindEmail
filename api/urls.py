@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('check/<email>', views.check_email),
+    path('check/<email>/<telegram_id>', views.check_email),
 ]
