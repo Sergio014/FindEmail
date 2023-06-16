@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from main import models
+from . import models as api_models
 from .db import check_email_in_db
 # Create your views here.
 
@@ -17,4 +18,6 @@ def check_email(request, email, telegram_id):
         return Response({'error': "Email not found in the database."}, status=400)
 
 
-
+@api_view(['GET'])
+def check_bot_view(request):
+    return Response({'is_active': api_models.Bot.objects.last().is_active}, status=200)
