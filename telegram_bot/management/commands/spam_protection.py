@@ -20,10 +20,15 @@ def check_message_count(user_id):
     result = cursor.fetchone()
 
     # Check if the user is banned and calculate the ban duration
-    if result and result[1] and datetime.now() < datetime.strptime(result[1], "%Y/%m/%d"):
-        ban_expiry_date = datetime.strptime(result[1], "%Y/%m/%d")
+    if result and result[1] and datetime.now() < datetime.strptime(result[1], "%Y/%m/%d %H:%M"):
+        ban_expiry_date = datetime.strptime(result[1], "%Y/%m/%d %H:%M")
         ban_duration = (ban_expiry_date - datetime.now()).days
+        print(result)
         return True
+    elif result and result[1] and datetime.now() >= datetime.strptime(result[1], "%Y/%m/%d %H:%M"):
+        cursor.execute("DELETE FROM user_messages WHERE user_id = ?", (user_id,))
+        conn.commit()
+        return False
     else:
         # User is not banned or the ban has expired, proceed to check message count
         if result:
@@ -37,11 +42,13 @@ def check_message_count(user_id):
         conn.commit()
 
         # Check if the user has crossed the ban threshold
-        if message_count > 8:
-            ban_duration = message_count - 7
-            ban_expiry_date = (datetime.now() + timedelta(days=ban_duration)).strftime("%Y/%m/%d")
+        if message_count > 7:
+            ban_duration = 45
+            ban_expiry_date = (datetime.now() + timedelta(minutes=ban_duration)).strftime("%Y/%m/%d %H:%M")
             cursor.execute("UPDATE user_messages SET ban_expiry_date = ? WHERE user_id = ?", (ban_expiry_date, user_id))
             conn.commit()
             return True
         else:
             return False
+        
+check_message_count('4')
