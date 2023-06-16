@@ -3,6 +3,9 @@ import requests
 from django.core.management.base import BaseCommand
 from telebot import types
 from .token import TOKEN
+from spam_protection import check_message_count
+
+
 # initialize bot using it token
 bot_token = TOKEN
 bot = telebot.TeleBot(bot_token)
@@ -32,6 +35,8 @@ user = {}
 @bot.message_handler(commands=['start'])
 # if user send /start command
 def start(message):
+    if check_message_count(message.chat.id):
+        return
     bot.reply_to(message, "Hello! Please, provide your email")
     bot.register_next_step_handler(message, check_email) # connect another handler to check response of user
 
