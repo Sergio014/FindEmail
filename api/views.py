@@ -20,4 +20,8 @@ def check_email(request, email, telegram_id):
 
 @api_view(['GET'])
 def check_bot_view(request):
-    return Response({'is_active': api_models.Bot.objects.last().is_active}, status=200)
+    try:
+        return Response({'is_active': api_models.Bot.objects.last().is_active}, status=200)
+    except Exception as e:
+        print(e)
+        return Response({'is_active': False}, status=400)
