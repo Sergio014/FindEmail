@@ -42,7 +42,8 @@ def activate_email_view(request):
     if request.POST: # if submit button is clicked
         user = User.objects.filter(username=request.POST['email']) # getting user from email
         if user.exists(): # cheking have user already activated account
-            if not user[0].is_active:
+            user = user[0]
+            if not user.is_active:
                 return HttpResponse('Email was sent, please check your email')
             try:
                 tel_user = TelegramUser.objects.get(email=user.username)
