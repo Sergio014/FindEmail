@@ -1,6 +1,5 @@
 import sqlite3
 from datetime import datetime, timedelta
-from .bot import send_full_info_to_user
 
 # Function to check the number of messages sent by a user and impose escalating bans
 def check_message_count(user_id):
@@ -47,6 +46,5 @@ def check_message_count(user_id):
             ban_expiry_date = (datetime.now() + timedelta(minutes=ban_duration)).strftime("%Y/%m/%d %H:%M")
             cursor.execute("UPDATE user_messages SET ban_expiry_date = ? WHERE user_id = ?", (ban_expiry_date, user_id))
             conn.commit()
-            return send_full_info_to_user(user_id, 'You is banned on 45 minutes')
         else:
             return False
