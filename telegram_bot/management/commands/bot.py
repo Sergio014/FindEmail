@@ -3,7 +3,7 @@ import requests
 from django.core.management.base import BaseCommand
 from telebot import types
 from .token import TOKEN
-from spam_protection import check_message_count
+from .spam_protection import check_message_count
 
 
 # initialize bot using it token
