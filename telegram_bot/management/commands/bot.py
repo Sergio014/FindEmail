@@ -27,7 +27,7 @@ user = {}
 
 def message_filter(func):
     def wrapper(message):
-        if message.date > start_time:
+        if message.date < start_time:
             func(message)
     return wrapper
 
