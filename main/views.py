@@ -46,7 +46,7 @@ def activate_email_view(request):
                 return HttpResponse('Email was sent, please check your email')
             try:
                 tel_user = TelegramUser.objects.get(email=user.username)
-            except TelegramUser.DoesNotExists:
+            except TelegramUser.DoesNotExist:
                 return HttpResponse('There no such user in data base!')
             response = check_email_in_db(user.username, user.is_active)
             if response:
