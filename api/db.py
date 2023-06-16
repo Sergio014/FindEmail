@@ -56,9 +56,7 @@ def check_email_in_db(email, is_verified): # 'is verified' is used to understand
         if data.exists() and not is_verified:
             return f"Email found in the database. Email was exposed at {result.date_created}"
         elif is_verified:
-            return f"""<br>Email: {result.username}<br>
-            Password: {result.password[0:2]}************<br>
-            Date: {result.date_created}"""
+            return f"\nEmail: {result.username}\nPassword: {result.password[0:2]}************\nDate: {result.date_created}"
         else:
             return False
     except Exception as error:
