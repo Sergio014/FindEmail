@@ -9,8 +9,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from main.activate_email import account_activation_token
 from api.db import check_email_in_db
-from telegram_bot.management.commands import send_full_info_to_user
-
+from telegram_bot.management.commands.bot import send_full_info_to_user
 
 # for activating account
 def activate(request, uidb64, token):
