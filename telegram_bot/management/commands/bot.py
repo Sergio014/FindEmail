@@ -17,7 +17,7 @@ def webAppKeyboard(link): #создание клавиатуры с webapp кн�
    return keyboard
 
 def send_full_info_to_user(tel_id, data):
-    bot.send_message(tel_id, data)
+    bot.send_message(tel_id, data, reply_markup=types.ReplyKeyboardRemove(selective=True))
 
 user = {}
 
