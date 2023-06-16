@@ -22,7 +22,7 @@ user = {}
 @bot.message_handler(commands=['start'])
 # if user send /start command
 def start(message):
-    bot.reply_to(message, "Hello! Please provide your email")
+    bot.reply_to(message, "Hello! Please, provide your email")
     bot.register_next_step_handler(message, check_email) # connect another handler to check response of user
 
 def check_email(message):
