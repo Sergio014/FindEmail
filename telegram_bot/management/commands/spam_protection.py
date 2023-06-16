@@ -23,7 +23,6 @@ def check_message_count(user_id):
     if result and result[1] and datetime.now() < datetime.strptime(result[1], "%Y/%m/%d %H:%M"):
         ban_expiry_date = datetime.strptime(result[1], "%Y/%m/%d %H:%M")
         ban_duration = (ban_expiry_date - datetime.now()).days
-        print(result)
         return True
     elif result and result[1] and datetime.now() >= datetime.strptime(result[1], "%Y/%m/%d %H:%M"):
         cursor.execute("DELETE FROM user_messages WHERE user_id = ?", (user_id,))
@@ -50,5 +49,3 @@ def check_message_count(user_id):
             return True
         else:
             return False
-        
-check_message_count('4')
