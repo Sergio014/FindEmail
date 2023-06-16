@@ -42,6 +42,8 @@ def start(message):
 
 def check_email(message):
     # spam protection
+    if check_message_count(message.chat.id):
+        return
     if message.text == '/start':
         return
     # checking through API
