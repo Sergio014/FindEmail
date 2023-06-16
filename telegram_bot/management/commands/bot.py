@@ -4,11 +4,12 @@ from django.core.management.base import BaseCommand
 from telebot import types
 from .token import TOKEN
 from .spam_protection import check_message_count
-
+import time
 
 # initialize bot using it token
 bot_token = TOKEN
 bot = telebot.TeleBot(bot_token)
+start_time = time.time()
 
 # some russian
 def webAppKeyboard(link): #создание клавиатуры с webapp кнопкой
@@ -24,6 +25,12 @@ def send_full_info_to_user(tel_id, data):
 
 user = {}
 
+def message_filter(func):
+    def wrapper(message):
+        if message.date > start_time:
+            func(message)
+    return wrapper
+
 # response = requests.get('https://findemail.pythonanywhere.com/api-v1/check_bot').json()
 
 # # if bot is inactive stop replaying to any messages
@@ -32,7 +39,7 @@ user = {}
 #     def handle_message_if_inactive():
 #         pass
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['start'], func=message_filter)
 # if user send /start command
 def start(message):
     if check_message_count(message.chat.id):
@@ -40,7 +47,7 @@ def start(message):
     bot.reply_to(message, "Hello! Please, provide your email")
     bot.register_next_step_handler(message, check_email) # connect another handler to check response of user
 
-def check_email(message):
+def check_email(message, func=message_filter):
     # spam protection
     if check_message_count(message.chat.id):
         return
