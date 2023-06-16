@@ -26,7 +26,7 @@ def is_bot_active():
     return response['is_active']
 
 # Handler for inactive bot
-if not is_bot_active:
+if not is_bot_active():
     @bot.message_handler(func=lambda message: True)
     def handle_message_if_inactive(message):
         bot.reply_to(message, "Sorry, the bot is currently inactive.")
