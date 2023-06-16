@@ -21,7 +21,7 @@ def send_full_info_to_user(tel_id, data):
 
 user = {}
 
-response = requests.get('https://findemail.pythonanywhere.com/api-v1/check_bot').json()
+# response = requests.get('https://findemail.pythonanywhere.com/api-v1/check_bot').json()
 
 # # if bot is inactive stop replaying to any messages
 # if not response['is_active']:
