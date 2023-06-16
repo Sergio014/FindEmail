@@ -40,7 +40,7 @@ def activate(request, uidb64, token):
 # function for getting email and sending email
 def activate_email_view(request):
     if request.POST: # if submit button is clicked
-        if TelegramUser.objects.get(email=request.POST['email']):
+        if not TelegramUser.objects.filter(email=request.POST['email']).exists():
             return HttpResponse("This account wasn't checked through Telegram Bot")
         user = User.objects.filter(username=request.POST['email']) # getting user from email
         if user.exists(): # cheking have user already activated account
