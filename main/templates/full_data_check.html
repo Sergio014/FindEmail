@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full data check</title>
+</head>
+<body>
+    {% if not page %}
+    <h1>What you want to check?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" name="check_email" value="Email">
+        <input type="submit" name="check_HWID" value="HWID">
+    </form>
+    {% elif page == 'email' %}
+    <h1>Please provide your email</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="email">Email:</label>
+        <input type="text" name="email">
+        <input type="submit" value="Check is something bondoned with email in db">
+    </form>
+    {% else %}
+    <h1>Please provide your HWID</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="email">HWID:</label>
+        <input type="text" name="HWID">
+        <input type="submit" value="Check is something bondoned with HWID in db">
+    </form>
+    {% endif %}
+</body>
+</html>

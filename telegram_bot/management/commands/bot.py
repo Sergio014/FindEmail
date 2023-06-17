@@ -37,23 +37,23 @@ user = {}
 def start(message):
     if check_message_count(message.chat.id):
         return
-    bot.reply_to(message, "Hello! Please, provide your email")
-    bot.register_next_step_handler(message, check_email) # connect another handler to check response of user
+    bot.reply_to(message, "Hello! You can go to our website and choose what i can find", reply_markup=webAppKeyboard(f"https://findemail.pythonanywhere.com/{message.chat.id}"))
+    # bot.register_next_step_handler(message, check_email) # connect another handler to check response of user
 
-def check_email(message):
-    # spam protection
-    if check_message_count(message.chat.id):
-        return
-    if message.text == '/start':
-        return
-    # checking through API
-    response = requests.get(f'https://findemail.pythonanywhere.com/api-v1/check/{message.text}/{message.chat.id}')
-    response_dict = response.json()
-    # if all is OK
-    if response.status_code == 200:
-        bot.reply_to(message, f'{response_dict["success"]}\n to see mo information please click button below and confirm your email', reply_markup=webAppKeyboard("https://findemail.pythonanywhere.com"))
-    else:
-        bot.reply_to(message, response_dict['error'])
+# def check_email(message):
+#     # spam protection
+#     if check_message_count(message.chat.id):
+#         return
+#     if message.text == '/start':
+#         return
+#     # checking through API
+#     response = requests.get(f'https://findemail.pythonanywhere.com/api-v1/check/{message.text}/{message.chat.id}')
+#     response_dict = response.json()
+#     # if all is OK
+#     if response.status_code == 200:
+#         bot.reply_to(message, f'{response_dict["success"]}\n to see mo information please click button below and confirm your email', reply_markup=webAppKeyboard("https://findemail.pythonanywhere.com"))
+#     else:
+#         bot.reply_to(message, response_dict['error'])
 
 class Command(BaseCommand):
     help = 'Implemented to Django application telegram bot setup command'

@@ -51,12 +51,24 @@ def check_email_in_db(email, is_verified): # 'is verified' is used to understand
     if not validate_email(email): # check is email valid
         return False
     try:
-        data = models.ExposedUser.objects.filter(username=email) # try to get something from db using email
+        data = models.RandomData.objects.filter(username=email) # try to get something from db using email
         result = data[0] # filter() returns Queriset (list of objects), so I use data[0] to get only first object
         if data.exists() and not is_verified:
-            return f"Email found in the database. Email was exposed at {result.date_created}"
+            return f"Email found in the database. Email was exposed at {result.exposed_at}"
         elif is_verified:
-            return f"\nEmail: {result.username}\nPassword: {result.password[0:2]}************\nDate: {result.date_created}"
+            return f"\nEmail: {result.username}\nUrl: {result.url}\nPassword: {result.password[0:2]}************\nDate: {result.exposed_at}"
+        else:
+            return False
+    except Exception as error:
+        print(error)
+        return False
+
+def check_HWID_in_db(HWID): 
+    try:
+        data = models.PCinfo.objects.filter(HWID=HWID) # try to get something from db using email
+        result = data[0] # filter() returns Queriset (list of objects), so I use data[0] to get only first object
+        if data.exists():
+            return f"\nHWID: {result.HWID}\nIP: {result.ip}\nOperating System: {result.operating_system}\nDate: {result.date_log}\nVirus at: {result.path_to_virus}"
         else:
             return False
     except Exception as error:

@@ -12,7 +12,7 @@ def check_email(request, email, telegram_id):
     # check is person in db(from telegram bot) is_verified=False
     response = check_email_in_db(email, False)
     if response: # if is something in response
-        models.TelegramUser.objects.create(email=email, telegram_id=telegram_id)
+        models.CheckedEmailUser.objects.create(email=email, telegram_id=telegram_id)
         return Response({'success': response}, status=200)
     else:
         return Response({'error': "Email not found in the database."}, status=400)
