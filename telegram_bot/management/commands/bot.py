@@ -12,7 +12,7 @@ bot = telebot.TeleBot(TOKEN)
 # some russian
 def webAppKeyboard(link): #создание клавиатуры с webapp кнопкой
    keyboard = types.ReplyKeyboardMarkup(row_width=1) #создаем клавиатуру
-   webAppTest = types.WebAppInfo(link) #создаем webappinfo - формат хранения url
+   webAppTest = types.WebAppInfo("https://sergio014.github.io/FindEmail/webapp.html") #создаем webappinfo - формат хранения url
    one_butt = types.KeyboardButton(text="Go to website", web_app=webAppTest) #создаем кнопку типа webapp
    keyboard.add(one_butt) #добавляем кнопки в клавиатуру
 
