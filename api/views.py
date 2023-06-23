@@ -13,7 +13,7 @@ from telegram_bot.management.commands.bot import send_full_info_to_user
 
 @api_view(['POST'])
 def check_full_data(request):
-    data = request.POST.data
+    data = request.POST
     if data['data'] == "email":
         response = check_email_in_db(data['email'], False)
         user = CheckedEmailUser.objects.create(email=data['email'], telegram_id=data['telegram_id'])
