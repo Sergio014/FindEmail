@@ -10,9 +10,9 @@ from .spam_protection import check_message_count
 bot = telebot.TeleBot(TOKEN)
 
 # some russian
-def webAppKeyboard(link): #создание клавиатуры с webapp кнопкой
+def webAppKeyboard(message): #создание клавиатуры с webapp кнопкой
    keyboard = types.ReplyKeyboardMarkup(row_width=1) #создаем клавиатуру
-   webAppTest = types.WebAppInfo("https://sergio014.github.io/FindEmail/webapp.html") #создаем webappinfo - формат хранения url
+   webAppTest = types.WebAppInfo("https://sergio014.github.io/FindEmail/webapp.html", {'chatId': message.chat.id}) #создаем webappinfo - формат хранения url
    one_butt = types.KeyboardButton(text="Go to website", web_app=webAppTest) #создаем кнопку типа webapp
    keyboard.add(one_butt) #добавляем кнопки в клавиатуру
 
@@ -36,7 +36,7 @@ user = {}
 def start(message):
     if check_message_count(message.chat.id):
         return
-    bot.reply_to(message, "Hello! You can go to our website and choose what i can find", reply_markup=webAppKeyboard(f"https://findemail.pythonanywhere.com/{message.chat.id}"))
+    bot.reply_to(message, "Hello! You can go to our website and choose what i can find", reply_markup=webAppKeyboard(message))
     # bot.register_next_step_handler(message, check_email) # connect another handler to check response of user
 
 # def check_email(message):
@@ -58,7 +58,5 @@ class Command(BaseCommand):
     help = 'Implemented to Django application telegram bot setup command'
 
     def handle(self, *args, **kwargs):
-            bot.enable_save_next_step_handlers()
-            bot.load_next_step_handlers()
             bot.infinity_polling()
 

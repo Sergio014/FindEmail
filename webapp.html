@@ -35,7 +35,6 @@
             emailForm.addEventListener('submit', function(event) {
                 event.preventDefault();
                 const email = document.getElementById("email").value;
-                const chatId = tg.initDataUnsafe.user.id;
                 const data = {
                     chat_id: chatId,
                     email: email
@@ -48,7 +47,6 @@
             hwidForm.addEventListener('submit', function(event) {
                 event.preventDefault();
                 const hwid = document.getElementById("hwid").value;
-                const chatId = tg.initDataUnsafe.user.id;
                 const data = {
                     chat_id: chatId,
                     hwid: hwid
