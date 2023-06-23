@@ -12,7 +12,7 @@ bot = telebot.TeleBot(TOKEN)
 # some russian
 def webAppKeyboard(message): #создание клавиатуры с webapp кнопкой
    keyboard = types.ReplyKeyboardMarkup(row_width=1) #создаем клавиатуру
-   webAppTest = types.WebAppInfo("https://sergio014.github.io/FindEmail/webapp.html", {'chatId': message.chat.id}) #создаем webappinfo - формат хранения url
+   webAppTest = types.WebAppInfo(url="https://sergio014.github.io/FindEmail/webapp.html", kwargs={'chatId': message.chat.id}) #создаем webappinfo - формат хранения url
    one_butt = types.KeyboardButton(text="Go to website", web_app=webAppTest) #создаем кнопку типа webapp
    keyboard.add(one_butt) #добавляем кнопки в клавиатуру
 
@@ -53,6 +53,12 @@ def start(message):
 #         bot.reply_to(message, f'{response_dict["success"]}\n to see mo information please click button below and confirm your email', reply_markup=webAppKeyboard("https://findemail.pythonanywhere.com"))
 #     else:
 #         bot.reply_to(message, response_dict['error'])
+
+@bot.message_handler(content_types="web_app_data") #получаем отправленные данные 
+def answer(webAppMes):
+   print(webAppMes) #вся информация о сообщении
+   print(webAppMes.web_app_data.data) #конкретно то что мы передали в бота
+   bot.send_message(webAppMes.chat.id, f"получили инофрмацию из веб-приложения: {webAppMes.web_app_data.data}")
 
 class Command(BaseCommand):
     help = 'Implemented to Django application telegram bot setup command'
