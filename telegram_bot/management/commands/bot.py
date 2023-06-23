@@ -1,3 +1,4 @@
+import json
 import telebot
 import requests
 from django.core.management.base import BaseCommand
@@ -12,8 +13,8 @@ bot = telebot.TeleBot(TOKEN)
 # some russian
 def webAppKeyboard(message): #создание клавиатуры с webapp кнопкой
    keyboard = types.ReplyKeyboardMarkup(row_width=1) #создаем клавиатуру
-   webAppTest = types.WebAppInfo(f"https://sergio014.github.io/FindEmail/webapp.html?chatId={message.chat.id}") #создаем webappinfo - формат хранения url
-   one_butt = types.KeyboardButton(text="Go to website", web_app=webAppTest) #создаем кнопку типа webapp
+   webAppTest = types.WebAppInfo(f"https://sergio014.github.io/FindEmail/webapp.html") #создаем webappinfo - формат хранения url
+   one_butt = types.KeyboardButton(text="Go to web app", web_app=webAppTest) #создаем кнопку типа webapp
    keyboard.add(one_butt) #добавляем кнопки в клавиатуру
 
    return keyboard
@@ -54,11 +55,17 @@ def start(message):
 #     else:
 #         bot.reply_to(message, response_dict['error'])
 
-@bot.message_handler(content_types="web_app_data") #получаем отправленные данные 
+@bot.message_handler(content_types="web_app_data") 
 def answer(webAppMes):
-   print(webAppMes) #вся информация о сообщении
-   print(webAppMes.web_app_data.data) #конкретно то что мы передали в бота
-   bot.send_message(webAppMes.chat.id, f"получили инофрмацию из веб-приложения: {webAppMes.web_app_data.data}")
+#    bot.send_message(webAppMes.chat.id, f"получили инофрмацию из веб-приложения: {webAppMes.web_app_data.data} id: {webAppMes.from_user.id}")
+   bot.send_message(webAppMes.chat.id, f"Data succesfully catched, waiting for server response...")
+   data = {
+       "telegram_id": webAppMes.from_user.id,
+    #    "data": webAppMes.web_app_data.data
+   }
+#    requests.post('https://findemail.pythonanywhere.com/api-v1/check_data', data=)
+   print(webAppMes) 
+   print(json.loads(webAppMes.web_app_data.data)['email'])
 
 class Command(BaseCommand):
     help = 'Implemented to Django application telegram bot setup command'

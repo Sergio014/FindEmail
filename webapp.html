@@ -8,8 +8,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         let tg = window.Telegram.WebApp;
-        const urlParams = new URLSearchParams(window.location.search);
-        const chatId = urlParams.get('chatId');
+        
         document.addEventListener('DOMContentLoaded', function() {
             const emailOrHwidDiv = document.querySelector('.email-or-hwid');
             const emailFormDiv = document.querySelector('.email-form');
@@ -37,7 +36,7 @@
                 event.preventDefault();
                 const email = document.getElementById("email").value;
                 const data = {
-                    chat_id: chatId,
+                    data: "email",
                     email: email
                 };
 
@@ -49,7 +48,7 @@
                 event.preventDefault();
                 const hwid = document.getElementById("hwid").value;
                 const data = {
-                    chat_id: chatId,
+                    data: "hwid",
                     hwid: hwid
                 };
 
