@@ -9,3 +9,5 @@ admin.site.register(PCinfo)
 admin.site.register(RandomData)
 
 admin.site.register(CheckedEmailUser)
+
+admin.site.register(CustomGroup)

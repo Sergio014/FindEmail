@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web app</title>
+    <script>
+        let tg = window.Telegram.WebApp;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailOrHwidDiv = document.querySelector('.email-or-hwid');
+            const emailFormDiv = document.querySelector('.email-form');
+            const hwidCheckDiv = document.querySelector('.hwid-check');
+
+            const emailButton = document.getElementById("check_email");
+            const hwidButton = document.getElementById("check_HWID");
+
+            emailButton.addEventListener('click', function() {
+                emailOrHwidDiv.style.display = 'none';
+                hwidCheckDiv.style.display = 'none';
+                emailFormDiv.style.display = 'block';
+            });
+
+            hwidButton.addEventListener('click', function() {
+                emailOrHwidDiv.style.display = 'none';
+                emailFormDiv.style.display = 'none';
+                hwidCheckDiv.style.display = 'block';
+            });
+
+            const emailForm = document.getElementById("emailForm");
+            const hwidForm = document.getElementById("hwidForm");
+
+            emailForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const email = document.getElementById("email").value;
+                const chatId = tg.initDataUnsafe.user.id;
+                const data = {
+                    chat_id: chatId,
+                    email: email
+                };
+
+                tg.sendData(data);
+
+            });
+
+            hwidForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const hwid = document.getElementById("hwid").value;
+                const chatId = tg.initDataUnsafe.user.id;
+                const data = {
+                    chat_id: chatId,
+                    hwid: hwid
+                };
+
+                tg.sendData(data);
+
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="email-or-hwid">
+        <h1>What do you want to check?</h1>
+        <button id="check_email" name="check_email">Email</button>
+        <button id="check_HWID" name="check_HWID">HWID</button>
+    </div>
+    <div class="email-form" style="display: none;">
+        <h1>Please provide your email</h1>
+        <form id="emailForm">
+            <label for="email">Email:</label>
+            <input type="text" name="email" id="email">
+            <input type="submit" value="Check if something is bound to the email in the database">
+        </form>
+    </div>
+    <div class="hwid-check" style="display: none;">
+        <h1>Please provide your HWID</h1>
+        <form id="hwidForm">
+            <label for="hwid">HWID:</label>
+            <input type="text" name="hwid" id="hwid">
+            <input type="submit" value="Check if something is bound to the HWID in the database">
+        </form>
+    </div>
+</body>
+</html>

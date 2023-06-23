@@ -7,8 +7,7 @@ from .spam_protection import check_message_count
 
 
 # initialize bot using it token
-bot_token = TOKEN
-bot = telebot.TeleBot(bot_token)
+bot = telebot.TeleBot(TOKEN)
 
 # some russian
 def webAppKeyboard(link): #создание клавиатуры с webapp кнопкой

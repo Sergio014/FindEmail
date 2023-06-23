@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class CheckedEmailUser(models.Model):
     email = models.EmailField()
@@ -33,3 +34,13 @@ class RandomData(models.Model):
     username = models.EmailField()
     password = models.CharField(max_length=255)
     exposed_at = models.DateTimeField(auto_now_add=True)
+
+class CustomGroup(models.Model):
+    # Add any additional fields or properties you want for your custom group model
+    email_notifications = models.BooleanField()
+    PC_notifications = models.BooleanField()
+    need_to_verify = models.BooleanField()
+    users = models.ManyToManyField(CheckedEmailUser)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
