@@ -12,7 +12,7 @@ bot = telebot.TeleBot(TOKEN)
 # some russian
 def webAppKeyboard(message): #создание клавиатуры с webapp кнопкой
    keyboard = types.ReplyKeyboardMarkup(row_width=1) #создаем клавиатуру
-   webAppTest = types.WebAppInfo(url="https://sergio014.github.io/FindEmail/webapp.html", kwargs={'chatId': message.chat.id}) #создаем webappinfo - формат хранения url
+   webAppTest = types.WebAppInfo(f"https://sergio014.github.io/FindEmail/webapp.html?chatId={message.chat.id}") #создаем webappinfo - формат хранения url
    one_butt = types.KeyboardButton(text="Go to website", web_app=webAppTest) #создаем кнопку типа webapp
    keyboard.add(one_butt) #добавляем кнопки в клавиатуру
 
@@ -64,5 +64,6 @@ class Command(BaseCommand):
     help = 'Implemented to Django application telegram bot setup command'
 
     def handle(self, *args, **kwargs):
+            print('All works')
             bot.infinity_polling()
 
