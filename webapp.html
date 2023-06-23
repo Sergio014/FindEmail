@@ -36,8 +36,8 @@
                 event.preventDefault();
                 const email = document.getElementById("email").value;
                 const data = {
-                    data: "email",
-                    email: email
+                    "data": "email",
+                    "email": email
                 };
 
                 tg.sendData(JSON.stringify(data));
@@ -48,8 +48,8 @@
                 event.preventDefault();
                 const hwid = document.getElementById("hwid").value;
                 const data = {
-                    data: "hwid",
-                    hwid: hwid
+                    "data": "hwid",
+                    "hwid": hwid
                 };
 
                 tg.sendData(JSON.stringify(data));
