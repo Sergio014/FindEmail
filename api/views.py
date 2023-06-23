@@ -13,25 +13,26 @@ from telegram_bot.management.commands.bot import send_full_info_to_user
 
 @api_view(['POST'])
 def check_full_data(request):
-    data = request.POST
+    telegram_id = request.POST['telegram_id']
+    data = request.POST['data']
     print(data)
     if data['data'] == "email":
         response = check_email_in_db(data['email'], False)
-        user = CheckedEmailUser.objects.create(email=data['email'], telegram_id=data['telegram_id'])
+        user = CheckedEmailUser.objects.create(email=data['email'], telegram_id=telegram_id)
         if response: # if is something in response
             user.found = True
             user.save()
-            send_full_info_to_user(data['telegram_id'], response)
+            send_full_info_to_user(telegram_id, response)
             return Response({"success": True}, 200)
         else:
             return Response({"error": "Email not found in the database."}, 404)
     elif data['data'] == "hwid" :
         response = check_HWID_in_db(data['hwid'])
-        PC = CheckedHWIDUser.objects.create(HWID=data['hwid'], telegram_id=data['telegram_id'])
+        PC = CheckedHWIDUser.objects.create(HWID=data['hwid'], telegram_id=telegram_id)
         if response: # if is something in response
             PC.found = True
             PC.save()
-            send_full_info_to_user(data['telegram_id'], response)
+            send_full_info_to_user(telegram_id, response)
             return Response({"success": True}, 200)
         else:
             return HttpResponse({"error": "HWID not found in the database."}, 404)
