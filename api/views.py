@@ -1,22 +1,39 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from main import models
+from django.http import HttpResponse
+from main.models import CheckedEmailUser, CheckedHWIDUser
+
 from . import models as api_models
 from .db import check_email_in_db
-# Create your views here.
+from django.http import HttpResponse
+from api.db import check_HWID_in_db, check_email_in_db
+from telegram_bot.management.commands.bot import send_full_info_to_user
 
-# only for get requests
-@api_view(['GET'])
-def check_email(request, email, telegram_id):
-    # check is person in db(from telegram bot) is_verified=False
-    response = check_email_in_db(email, False)
-    if response: # if is something in response
-        models.CheckedEmailUser.objects.create(email=email, telegram_id=telegram_id)
-        return Response({'success': response}, status=200)
-    else:
-        return Response({'error': "Email not found in the database."}, status=400)
 
+@api_view(['POST'])
+def check_full_data(request):
+    data = request.POST.data
+    if data['data'] == "email":
+        response = check_email_in_db(data['email'], False)
+        user = CheckedEmailUser.objects.create(email=data['email'], telegram_id=data['telegram_id'])
+        if response: # if is something in response
+            user.found = True
+            user.save()
+            send_full_info_to_user(data['telegram_id'], response)
+            return Response({"success": True}, 200)
+        else:
+            return Response({"error": "Email not found in the database."}, 404)
+    elif data['data'] == "hwid" :
+        response = check_HWID_in_db(data['hwid'])
+        PC = CheckedHWIDUser.objects.create(HWID=data['hwid'], telegram_id=data['telegram_id'])
+        if response: # if is something in response
+            PC.found = True
+            PC.save()
+            send_full_info_to_user(data['telegram_id'], response)
+            return Response({"success": True}, 200)
+        else:
+            return HttpResponse({"error": "HWID not found in the database."}, 404)
 
 @api_view(['GET'])
 def check_bot_view(request):

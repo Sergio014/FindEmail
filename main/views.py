@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from .models import CheckedEmailUser, CheckedHWIDUser
 
-from django.http import HttpResponse
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from main.activate_email import account_activation_token
