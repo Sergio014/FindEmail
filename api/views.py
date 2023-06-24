@@ -1,3 +1,4 @@
+import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -13,9 +14,10 @@ from telegram_bot.management.commands.bot import send_full_info_to_user
 
 @api_view(['POST'])
 def check_full_data(request):
+    print(request.POST)
+    print(json.loads(request.POST))
     telegram_id = request.POST['telegram_id']
     data = request.POST
-    print(data)
     if data['data'] == "email":
         response = check_email_in_db(data['email'], False)
         user = CheckedEmailUser.objects.create(email=data['email'], telegram_id=telegram_id)
