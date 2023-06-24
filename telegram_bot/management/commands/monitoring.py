@@ -27,7 +27,7 @@ def monitoring_job():
 scheduler = BlockingScheduler()
 
 # Schedule the job to run every minute
-scheduler.add_job(monitoring_job, 'interval', minutes=1)
+scheduler.add_job(monitoring_job, 'interval', hours=24)
 
 # Start the scheduler
 class Command(BaseCommand):
