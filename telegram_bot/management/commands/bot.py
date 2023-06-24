@@ -59,14 +59,12 @@ def start(message):
 def answer(webAppMes):
     bot.send_message(webAppMes.chat.id, f"Data succesfully catched, waiting for server response...")
     data = json.loads(webAppMes.web_app_data.data)
-    print(data)
     data_for_api = {
         "telegram_id": webAppMes.from_user.id,
         "data": data['data'],
         "email": data.get('email', False),
         "hwid": data.get('hwid', False),
     }
-    print(data_for_api)
     response = requests.post('https://findemail.pythonanywhere.com/api-v1/check_data', data=data_for_api)
     if response.status_code == 404:
         bot.send_message(data_for_api['telegram_id'], response.json()['error'])

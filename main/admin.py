@@ -10,4 +10,6 @@ admin.site.register(RandomData)
 
 admin.site.register(CheckedEmailUser)
 
+admin.site.register(CheckedHWIDUser)
+
 admin.site.register(CustomGroup)
