@@ -14,8 +14,8 @@ from telegram_bot.management.commands.bot import send_full_info_to_user
 
 @api_view(['POST'])
 def check_full_data(request):
-    print(request.POST)
-    print(json.loads(request.POST))
+    print(request.data)
+    print('data||||')
     telegram_id = request.POST['telegram_id']
     data = request.POST
     if data['data'] == "email":
