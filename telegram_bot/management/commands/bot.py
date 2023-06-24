@@ -62,7 +62,7 @@ def answer(webAppMes):
     print(data)
     data_for_api = {
         "telegram_id": webAppMes.from_user.id,
-        "data": data
+        "data1": data
     }
     print(data_for_api)
     response = requests.post('https://findemail.pythonanywhere.com/api-v1/check_data', data=data_for_api)
