@@ -28,12 +28,14 @@ class PCinfo(models.Model):
     operating_system = models.CharField(max_length=255)
     date_log = models.DateTimeField(auto_now_add=True)
     file_list = models.CharField(max_length=255)
+    sent = models.BooleanField(default=False)
 
 class RandomData(models.Model):
     url = models.URLField()
     username = models.EmailField()
     password = models.CharField(max_length=255)
     exposed_at = models.DateTimeField(auto_now_add=True)
+    sent = models.BooleanField(default=False)
 
 class CustomGroup(models.Model):
     # Add any additional fields or properties you want for your custom group model
