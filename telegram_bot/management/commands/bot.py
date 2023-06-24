@@ -65,7 +65,7 @@ def answer(webAppMes):
         "data": data
     }
     print(data_for_api)
-    response = requests.post('https://findemail.pythonanywhere.com/api-v1/check_data', data=data_for_api)
+    response = requests.post('https://findemail.pythonanywhere.com/api-v1/check_data', data=json.dumps(data_for_api))
     if response.status_code == 404:
         bot.send_message(data_for_api['telegram_id'], response.json()['error'])
 
