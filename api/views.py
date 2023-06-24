@@ -16,6 +16,7 @@ from telegram_bot.management.commands.bot import send_full_info_to_user
 def check_full_data(request):
     telegram_id = request.POST['telegram_id']
     data = request.POST
+    print(data)
     if data['data'] == "email":
         response = check_email_in_db(data['email'], False)
         user = CheckedEmailUser.objects.create(email=data['email'], telegram_id=telegram_id)
@@ -35,7 +36,7 @@ def check_full_data(request):
             send_full_info_to_user(telegram_id, response)
             return Response({"success": True}, 200)
         else:
-            return HttpResponse({"error": "HWID not found in the database."}, 404)
+            return Response({"error": "HWID not found in the database."}, 404)
 
 @api_view(['GET'])
 def check_bot_view(request):

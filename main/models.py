@@ -23,7 +23,7 @@ class PCinfo(models.Model):
     folder_name = models.CharField(max_length=255)
     ip = models.GenericIPAddressField()
     path_to_virus = models.CharField(max_length=255)
-    username = models.EmailField()
+    username = models.CharField(max_length=255)
     HWID = models.CharField(max_length=255)
     operating_system = models.CharField(max_length=255)
     date_log = models.DateTimeField(auto_now_add=True)
