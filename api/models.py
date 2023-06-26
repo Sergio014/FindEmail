@@ -1,5 +1,6 @@
 from django.db import models
 from telegram_bot.management.commands.monitoring import monitoring_job
+from telegram_bot.management.commands.bot import delete_message_from_user
 import subprocess
 import signal
 
@@ -34,3 +35,21 @@ class Monitoring(models.Model):
         elif self.kind == 'hwid_group':
             monitoring_job(self.group, 'hwid')
         super().save(*args, **kwargs)
+
+class NotificationHistory(models.Model):
+    text = models.TextField()
+    telegram_id = models.BigIntegerField()
+    date_of_sending = models.DateTimeField(auto_now_add=True)
+    message_id = models.BigIntegerField()
+
+    def delete(self, *args, **kwargs):
+        delete_message_from_user(self.telegram_id, self.message_id)
+        super().delete(*args, **kwargs)
+
+class Rating(models.Model):
+    stars = models.IntegerField()
+
+    @property
+    def calculate_average_rating(self):
+        total_ratings = self.__class__.objects.aggregate(models.Avg('stars'))
+        return round(total_ratings['stars__avg'], 1)

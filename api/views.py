@@ -13,6 +13,10 @@ from telegram_bot.management.commands.bot import send_full_info_to_user
 
 
 @api_view(['POST'])
+def add_rating(request):
+    stars = int(request.POST['stars'])
+    api_models.Rating.objects.create(stars=stars)
+@api_view(['POST'])
 def check_full_data(request):
     telegram_id = request.POST['telegram_id']
     data = request.POST

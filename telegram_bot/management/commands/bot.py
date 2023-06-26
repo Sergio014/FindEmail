@@ -6,7 +6,6 @@ from telebot import types
 from .token import TOKEN
 from .spam_protection import check_message_count
 
-
 # initialize bot using it token
 bot = telebot.TeleBot(TOKEN)
 
@@ -19,8 +18,13 @@ def webAppKeyboard(message): #создание клавиатуры с webapp к
 
    return keyboard
 
+def delete_message_from_user(tel_id, message_id):
+    bot.delete_message(tel_id, message_id)
+
 def send_full_info_to_user(tel_id, data):
-    bot.send_message(tel_id, data, reply_markup=types.ReplyKeyboardRemove(selective=True))
+    from api.models import NotificationHistory
+    message = bot.send_message(tel_id, data)
+    NotificationHistory.objects.create(text=data, telegram_id=tel_id, message_id=message.id)
 
 user = {}
 
@@ -54,6 +58,22 @@ def start(message):
 #         bot.reply_to(message, f'{response_dict["success"]}\n to see mo information please click button below and confirm your email', reply_markup=webAppKeyboard("https://findemail.pythonanywhere.com"))
 #     else:
 #         bot.reply_to(message, response_dict['error'])
+
+@bot.message_handler(commands=['history'])
+# if user send /start command
+def history(message):
+    from api.models import NotificationHistory
+    if check_message_count(message.chat.id):
+        return
+    bot.reply_to(message, "Hello! Here is your notifications history:")
+    for notification in NotificationHistory.objects.filter(telegram_id=message.chat.id):
+        bot.send_message(notification.telegram_id, f"Text: {notification.text}\n Date of sending: {notification.date_of_sending}")
+    bot.reply_to(message, "Please rate our app fom 1 to 5")
+    bot.register_next_step_handler(message, get_stars)
+
+def get_stars(message):
+    rating = message.text
+    requests.post('https://findemail.pythonanywhere.com/api-v1/add_rating', data={'stars': rating})
 
 @bot.message_handler(content_types="web_app_data") 
 def answer(webAppMes):
