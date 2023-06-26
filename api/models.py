@@ -15,9 +15,22 @@ class Bot(models.Model):
         super().save(*args, **kwargs)
 
 class Monitoring(models.Model):
-    date = models.DateTimeField()
+    USER_CHOICES = [
+        ('all', 'Start monitoring for all users'),
+        ('email_group', 'Start monitoring for specific group of checked email users'),
+        ('hwid_group', 'Start monitoring for specific group of checked HWID users'),
+    ]
+
     description = models.TextField()
+    kind = models.CharField(max_length=11, choices=USER_CHOICES)
+    group = models.ForeignKey(to='main.CustomGroup', on_delete=models.SET_NULL, null=True, blank=True)
+
 
     def save(self, *args, **kwargs):
-        monitoring_job()
+        if self.kind == 'all':
+            monitoring_job()
+        elif self.kind == 'email_group':
+            monitoring_job(self.group, 'email')
+        elif self.kind == 'hwid_group':
+            monitoring_job(self.group, 'hwid')
         super().save(*args, **kwargs)
