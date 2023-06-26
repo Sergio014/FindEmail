@@ -45,24 +45,16 @@ def activate(request, uidb64, token):
     try:
         # get user from him id
         uid = force_str(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = CheckedEmailUser.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, CheckedEmailUser.DoesNotExist):
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
         # making user active
-        user.is_active = True
+        user.verified = True
         user.save()
-        try:
-            tel_user = CheckedEmailUser.objects.get(email=user.username)
-        except CheckedEmailUser.DoesNotExist:
-            return HttpResponse('There no such user in data base!')
-        response = check_email_in_db(user.username, user.is_active)
-        if response:
-            send_full_info_to_user(tel_user.telegram_id, f'Congitulations you succesfully confirmed your email!\nYour information:\n{response}')
-            return HttpResponse('Succesfully confirmed')
-        else:
-            return HttpResponse('Something went wrong ;(')
+        send_full_info_to_user(user.telegram_id, f'Congitulations you succesfully confirmed your email!')
+        return HttpResponse('Succesfully confirmed')
     else:
         return HttpResponse('Activation link is invalid!')
 

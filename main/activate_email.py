@@ -11,21 +11,19 @@ from django.core.mail import EmailMessage
 class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
         return (
-            six.text_type(user.pk) + six.text_type(timestamp)  + six.text_type(user.is_active)
+            six.text_type(user.pk) + six.text_type(timestamp)  + six.text_type(user.verified)
         )
 
 # initialize class
 account_activation_token = AccountActivationTokenGenerator()
 
-def activate_email(request, user, to_email):
+def activate_email(user, to_email):
     mail_subject = 'Activate your user account.'
     # create message for user, template is in /templates
     message = render_to_string('template_activate_account.html', {
-        'user': user.username,
-        'domain': get_current_site(request).domain,
+        'domain': 'findemail.pythonanywhere.com',
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
-        'protocol': 'https' if request.is_secure() else 'http'
     })
     # send email activation
     EmailMessage(mail_subject, message, to=[to_email]).send()
