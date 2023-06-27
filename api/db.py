@@ -51,7 +51,7 @@ def check_email_in_db(email, is_verified): # 'is verified' is used to understand
     if not validate_email(email): # check is email valid
         return False
     try:
-        data = models.RandomData.objects.filter(username=email, checked=False) # try to get unchecked data from db using email
+        data = models.RandomData.objects.filter(username=email) # try to get unchecked data from db using email
         result = data[0] # filter() returns Queriset (list of objects), so I use data[0] to get only first object
         if data.exists() and not is_verified:
             data.checked = True
