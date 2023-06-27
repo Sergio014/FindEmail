@@ -51,11 +51,11 @@ def check_email_in_db(email, is_verified): # 'is verified' is used to understand
     if not validate_email(email): # check is email valid
         return False
     try:
-        data = models.RandomData.objects.filter(username=email) # try to get unchecked data from db using email
+        data = models.RandomData.objects.filter(username=email, checked=False) # try to get unchecked data from db using email
         result = data[0] # filter() returns Queriset (list of objects), so I use data[0] to get only first object
         if data.exists() and not is_verified:
-            data.checked = True
-            data.save()
+            result.checked = True
+            result.save()
             return f"Email found in the database. Email was exposed at {datetime.strftime(result.exposed_at, '%Y/%m/%d %H:%M')}"
         elif is_verified:
             return f"\nEmail: {result.username}\nUrl: {result.url}\nPassword: {result.password[0:2]}************\nDate: {result.exposed_at}"
@@ -70,8 +70,8 @@ def check_HWID_in_db(HWID):
         data = models.PCinfo.objects.filter(HWID=HWID, checked=False) # try to get something from db using email
         result = data[0] # filter() returns Queriset (list of objects), so I use data[0] to get only first object
         if data.exists():
-            data.checked = True
-            data.save()
+            result.checked = True
+            result.save()
             return f"\nHWID: {result.HWID}\nIP: {result.ip}\nOperating System: {result.operating_system}\nDate: {datetime.strftime(result.date_log, '%Y/%m/%d %H:%M')}\nVirus at: {result.path_to_virus}"
         else:
             return False
