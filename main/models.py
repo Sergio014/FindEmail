@@ -37,6 +37,7 @@ class PCinfo(models.Model):
     operating_system = models.CharField(max_length=255)
     date_log = models.DateTimeField(auto_now_add=True)
     file_list = models.CharField(max_length=255)
+    checked = models.BooleanField(default=False)
     sent = models.BooleanField(default=False)
 
 class RandomData(models.Model):
@@ -44,6 +45,7 @@ class RandomData(models.Model):
     username = models.EmailField()
     password = models.CharField(max_length=255)
     exposed_at = models.DateTimeField(auto_now_add=True)
+    checked = models.BooleanField(default=False)
     sent = models.BooleanField(default=False)
 
 class CustomGroup(models.Model):
